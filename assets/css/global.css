@@ -1,0 +1,6 @@
+.nuxt-loader-bar  {
+    display: none;
+}
+.nuxt-logo {
+    display: none !important;
+}
