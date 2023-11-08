@@ -55,12 +55,12 @@
 
           </div>
           <div>
-            <button type="submit"  class="bg-blue-400 px-20 py-2 rounded-3xl text-white">
+            <button type="submit" v-if="!loader" class="bg-blue-400 px-20 py-2 rounded-3xl text-white">
               Register
             </button>
-            <!-- <button   class="bg-blue-400 px-20 py-2 rounded-3xl text-white">
+            <button v-if="loader"  class="bg-blue-400 px-20 py-2 rounded-3xl text-white">
               <LoaderIcon class="w-6 h-6" />
-            </button> -->
+            </button>
           </div>
     </form>
 </template>
@@ -72,9 +72,9 @@ const emit = defineEmits(['closedRegister']);
 
 const validationSchema = toTypedSchema(
   zod.object({
-    name:zod.string().trim('Name is required').nonempty('Name is required'),
+    name:zod.string().trim().nonempty('Name is required'),
     username: zod.string().nonempty('Username is required').startsWith('@',{message:'Must be start from @'}),
-    password: zod.string().trim('Password is required').nonempty('Password is required').min(8, { message: 'Min 8 characters ' }),
+    password: zod.string().trim().nonempty('Password is required').min(8, { message: 'Min 8 characters ' }),
     email:zod.string().nonempty('Email is required').email({message:'Email must be valid'}),
     image:zod.string().nonempty('Image is required').url('Must be valid Image Url')
   
@@ -89,7 +89,10 @@ const { value: username } = useField('username');
 const { value: name } = useField('name');
 const { value: image } = useField('image');
 
+const loader = useState("loader_register",() => false) as any;
+
 const onSubmit = handleSubmit(async(values) => {
+  loader.value = true
   const register_Inputs = {
         name:values.name,
         username:values.username,
@@ -102,10 +105,14 @@ const onSubmit = handleSubmit(async(values) => {
         body:register_Inputs
     }) as any;
     if(toRaw(data.value).register_user !== undefined){
-    
       alert("User Register Successfully !!");
+      loader.value = false
 
       emit('closedRegister',false)
+    } else {
+      alert('Something went wrong with request try again !!');
+      loader.value = false
+
     }
 });
 
