@@ -9,9 +9,9 @@
                 <div class="hidden lg:block text-center ">
                     <Leftsection />
                 </div>
-                <div v-if="loader" class="flex flex-col gap-5 py-5 justify-center items-center ">
+                <div v-if="loader" class="flex flex-col gap-5 py-20 h-full justify-center items-center ">
                         <h1 >
-                            <LoaderIcon class="font-bold text-blue-400 text-4xl" />
+                            <LoaderIcon class="font-bold text-blue-400 w-10 h-10 text-4xl" />
                         </h1>
                     </div>
                 <div v-if="!loader"  class="flex flex-col gap-5 py-5 main_section">

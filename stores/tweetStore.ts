@@ -8,7 +8,8 @@ export const useTweetStore = defineStore('tweetStore',() => {
     const user_info = useState('userData',() => null)  as any;
     const authStore = useAuthStore();
     const {user_data} = storeToRefs(authStore);
-    const getTweetId = useState("tweetID",() => null) as any
+    const getTweetId = useState("tweetID",() => null) as any;
+    const getAllTweetsLoader = useState('getAllTweetsLoader',() => false) as any;
 
     const getUserTweets = async () => {
         const {data } = await useFetch(`/api/userposts/${user_data.value?.user_login?.id}`,{
@@ -20,12 +21,20 @@ export const useTweetStore = defineStore('tweetStore',() => {
     };
 
     const getAllTweets = async () => {
+        getAllTweetsLoader.value = true
         const {data } = await useFetch('/api/getAllPost',{
             lazy:false,
             server:true
         }) as any;
 
         all_tweets.value = data;
+
+        if(data.value){
+           getAllTweetsLoader.value = false
+        } else {
+           getAllTweetsLoader.value = false
+
+        }
         
     }
 
@@ -114,6 +123,7 @@ export const useTweetStore = defineStore('tweetStore',() => {
 
     return {
         getAllTweets,
+        getAllTweetsLoader,
         getUserTweets,
         user_posts,
         all_tweets,
