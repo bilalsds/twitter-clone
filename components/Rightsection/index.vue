@@ -14,6 +14,13 @@
 
                 <div  v-if="search_posts != null">
                     <span v-if="search_posts.search_result.length == 0" class="py-2 text-gray-400 text-sm"> No tweets found !!</span>
+                    
+
+                </div>
+                <div class="flex justify-center py-5" v-if="search_posts == null">
+                    <span  class="py-2 text-gray-400 text-sm">
+                        <LoaderIcon class="w-6 h-6" />
+                    </span>
                 </div>
                 
             </div>
@@ -111,6 +118,7 @@ const {search_posts} = storeToRefs(tweetStore);
 
 const changeHandler = async () => {
     tweetStore.getSearchData(toRaw(searchTweet.value));
+    
 };
 
 watch(search_posts,() => {
