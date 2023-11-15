@@ -26,7 +26,7 @@ const get_user = await prisma.user.findUnique({
     }
 });
 
-console.log("Test Get User : ",get_user);
+// console.log("Test Get User : ",get_user);
 
 
 return {

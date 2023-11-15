@@ -16,7 +16,7 @@
             <span class="self-center">
                 <BellIcon class="w-6 h-6" />
             </span>
-            <span class="self-center">
+            <span class="self-center cursor-pointer" @click="navigateTo('/messages')">
                 <MessageIcon class="w-6 h-6" />
             </span>
             <span class="self-center">
@@ -43,7 +43,7 @@
             <span class=" self-start">
                 Notifications
             </span>
-            <span class="self-start">
+            <span class="self-start cursor-pointer" @click="navigateTo('/messages')">
                 Messages
             </span>
             <span class="self-start">

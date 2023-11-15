@@ -1,8 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  // spaLoadingTemplate:false
-  modules:['@nuxtjs/tailwindcss','@pinia/nuxt','@formkit/nuxt','@pinia-plugin-persistedstate/nuxt','@vee-validate/nuxt',],
+  modules:['@nuxtjs/tailwindcss','@pinia/nuxt','@formkit/nuxt','@pinia-plugin-persistedstate/nuxt','@vee-validate/nuxt'],
   veeValidate:{
     // disable or enable auto imports
     autoImports: true,
@@ -14,6 +13,11 @@ export default defineNuxtConfig({
       ErrorMessage: 'VeeErrorMessage',
     },
   },
+  // io:{
+  //   sockets:[{
+  //     url:'http://localhost:3000/'
+  //   }]
+  // },
   
   components:[{
     path:'~/components/',
@@ -26,6 +30,9 @@ export default defineNuxtConfig({
     cloud_secret:process.env.CLOUDINARY_APISECRETKEY
 
   },
-  css:['~/assets/css/global.css']
+  css:['~/assets/css/global.css'],
+  // serverMiddleware: [
+  //   { path: '/socket.io', handler: '~/server/middleware/socket.js' },
+  // ],
   
 })

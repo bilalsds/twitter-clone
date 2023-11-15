@@ -10,6 +10,12 @@ export const useTweetStore = defineStore('tweetStore',() => {
     const {user_data} = storeToRefs(authStore);
     const getTweetId = useState("tweetID",() => null) as any;
     const getAllTweetsLoader = useState('getAllTweetsLoader',() => false) as any;
+    const all_users = useState('all_users',() => null) as any;
+    const user_chats = useState("user_chats",() => null) as any;
+    const all_user_messages = useState("all_user_messages",() => null) as any;
+    const messages_loader = useState("messages_loader",() => false)as any;
+    const chat_containerRef = useState("ChatContainerRef",() => null) as any;
+
 
     const getUserTweets = async () => {
         const {data } = await useFetch(`/api/userposts/${user_data.value?.user_login?.id}`,{
@@ -121,6 +127,77 @@ export const useTweetStore = defineStore('tweetStore',() => {
         }
     }
 
+    const getAllUser = async () => {
+        const {data } = await useFetch('/api/users/allusers',{
+            lazy:false,
+            server:true
+        }) as any;
+
+        all_users.value = data;
+
+    }
+
+    const updateUserChat = (data:any) => {
+
+        all_user_messages.value = null
+        user_chats.value = data;
+
+
+    //    setInterval(() => {
+        getAllMessages({
+            sender:toRaw(user_data.value).user_login.id,
+            reciever:data.id
+        });
+       
+    //    },5000)
+        
+    }
+    const getAllMessages = async (params:any) => {
+        if(toRaw(all_user_messages.value) == null){
+    messages_loader.value = true
+        }
+
+        const {data} = await  useFetch(`/api/messages/getmessage?sender=${params.sender}&reciever=${params.reciever}`);
+        all_user_messages.value = data;
+       
+        if(data.value){
+        messages_loader.value = false;
+       setTimeout(() => {
+        if (chat_containerRef) {
+            chat_containerRef.scrollTop =chat_containerRef.scrollHeight;
+          }
+       }, 2000);
+
+       
+}
+    }
+
+    const sendMessage = async (text:any) => {
+
+        console.log("Send Message Func Get Fire ....");
+
+        const {data} = await useFetch('/api/messages/addmessage',{
+            method:'POST',
+            body:{
+                from : toRaw(user_data.value).user_login.id,
+                to : toRaw(user_chats.value).id, 
+                message : toRaw(text.value) 
+            }
+        });
+
+        console.log("Test Response Send Message : ",toRaw(data.value));
+        
+
+        if(data.value){
+            text.value = '';
+            getAllMessages({
+                sender:toRaw(user_data.value).user_login.id,
+                reciever:toRaw(user_chats.value).id
+            });
+        }
+
+    }
+
     return {
         getAllTweets,
         getAllTweetsLoader,
@@ -135,8 +212,15 @@ export const useTweetStore = defineStore('tweetStore',() => {
         getSearchData,
         search_posts,
         getUserData,
-        user_info
+        user_info,
+        getAllUser,
+        all_users,
+        user_chats,
+        updateUserChat,
+        getAllMessages,
+        all_user_messages,
+        messages_loader,
+        sendMessage,
+        chat_containerRef
     }
-
-
 })

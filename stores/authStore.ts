@@ -42,7 +42,6 @@ export const useAuthStore = defineStore('authStore',() => {
 
     return my_auth_store;
 
-
 },{
     persist:{
         storage:persistedState.localStorage

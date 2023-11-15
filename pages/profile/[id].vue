@@ -74,7 +74,10 @@
                   </div>
                 </div>
 
-                <div class="EditProfileButton"></div>
+                <div class="EditProfileButton">
+                <button class="bg-blue-400 font-semibold py-2 px-10 text-white rounded-full" @click="messageHandler">Message</button>
+
+                </div>
               </div>
             </div>
           </div>
@@ -116,6 +119,14 @@ onBeforeMount(() => {
 watch(user_info, () => {
   console.log("Test User Profile Info : ", toRaw(user_info.value));
 });
+
+const messageHandler = () => {
+  tweetStore.updateUserChat(toRaw(user_info.value).user_data)
+  navigateTo('/messages');
+}
+
+
+
 </script>
 
 <style scoped>
